@@ -2,14 +2,14 @@ package Jacob.Sorts;
 
 import java.util.ArrayList;
 
-import Jacob.sv_main;
+import Jacob.SortingVisualizer;
 
-public class sv_radixlsdsort implements Runnable{
+public class RadixSort implements Runnable{
 	
 	public void run() {
-		Integer[] toBeSorted = sv_main.toBeSorted;
+		Integer[] toBeSorted = SortingVisualizer.toBeSorted;
 		radixlsd(toBeSorted, 1);
-		sv_main.isSorting=false;
+		SortingVisualizer.isSorting=false;
 	}
 	
 	private void radixlsd(Integer[] x, int digit){
@@ -25,9 +25,9 @@ public class sv_radixlsdsort implements Runnable{
 				theDig/=10;
 			}
 			if (x[i] > maxI) maxI = x[i];
-			sv_main.frame.reDrawArray(x, -1, -1, i);
+			SortingVisualizer.frame.reDrawArray(x, -1, -1, i);
 			try {
-				Thread.sleep(sv_main.sleep);
+				Thread.sleep(SortingVisualizer.sleep);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -40,9 +40,9 @@ public class sv_radixlsdsort implements Runnable{
 		
 		Integer[] y = finalList.toArray(new Integer[0]);
 		
-		sv_main.frame.reDrawArray(y);
+		SortingVisualizer.frame.reDrawArray(y);
 		try {
-			Thread.sleep(sv_main.sleep);
+			Thread.sleep(SortingVisualizer.sleep);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

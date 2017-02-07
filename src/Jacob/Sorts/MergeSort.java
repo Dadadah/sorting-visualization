@@ -1,13 +1,13 @@
 package Jacob.Sorts;
 
-import Jacob.sv_main;
+import Jacob.SortingVisualizer;
 
-public class sv_mergesort implements Runnable{
+public class MergeSort implements Runnable{
 	
 	public void run() {
-		Integer[] toBeSorted = sv_main.toBeSorted;
+		Integer[] toBeSorted = SortingVisualizer.toBeSorted;
 		inPlaceSort(toBeSorted);
-		sv_main.isSorting=false;
+		SortingVisualizer.isSorting=false;
 	}
 	public void inPlaceSort ( Integer[] x )
 	   {  inPlaceSort (x, 0, x.length-1);  }
@@ -45,9 +45,9 @@ public class sv_mergesort implements Runnable{
             // EVERYTHING has moved up by one
             lt++;  mid++;  rt++;
          }
-         sv_main.frame.reDrawArray(x, mid, rt, lt);
+         SortingVisualizer.frame.reDrawArray(x, mid, rt, lt);
 			try {
-				Thread.sleep(sv_main.sleep);
+				Thread.sleep(SortingVisualizer.sleep);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

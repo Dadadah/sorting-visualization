@@ -1,12 +1,12 @@
 package Jacob.Sorts;
 
-import Jacob.sv_main;
+import Jacob.SortingVisualizer;
 
-public class sv_shellsort implements Runnable{
+public class ShellSort implements Runnable{
 	
 	public void run() {
 		int temp = 0;
-		Integer[] toBeSorted = sv_main.toBeSorted;
+		Integer[] toBeSorted = SortingVisualizer.toBeSorted;
 		int j = 0;
 		
 		for(int gap = toBeSorted.length/2; gap > 0; gap/=2){
@@ -14,9 +14,9 @@ public class sv_shellsort implements Runnable{
 				temp = toBeSorted[i];
 				for (j = i; j>=gap && temp<toBeSorted[j-gap]; j -= gap){
 					toBeSorted[j] = toBeSorted[j-gap];
-					sv_main.frame.reDrawArray(toBeSorted, i, j);
+					SortingVisualizer.frame.reDrawArray(toBeSorted, i, j);
 					try {
-						Thread.sleep(sv_main.sleep);
+						Thread.sleep(SortingVisualizer.sleep);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -25,6 +25,6 @@ public class sv_shellsort implements Runnable{
 			}
 		}
 		
-		sv_main.isSorting=false;
+		SortingVisualizer.isSorting=false;
 	}
 }

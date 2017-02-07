@@ -19,7 +19,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
-public class sv_frame extends JFrame {
+public class VisualizerFrame extends JFrame {
 
 	private JPanel wrapper;
 	private JPanel arrayWrapper;
@@ -34,7 +34,7 @@ public class sv_frame extends JFrame {
 	private GridBagConstraints c;
 	private String[] Sorts = {"Bubble", "Selection", "Insertion", "Gnome", "Merge", "Radix", "Shell", "Bubble(fast)", "Selection(fast)", "Insertion(fast)", "Gnome(fast)"};
 	
-	public sv_frame(){
+	public VisualizerFrame(){
 		super("Sorting Visualizer");
 		
 		start = new JButton("Start");
@@ -58,7 +58,7 @@ public class sv_frame extends JFrame {
 		
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sv_main.startSort((String) selection.getSelectedItem());
+				SortingVisualizer.startSort((String) selection.getSelectedItem());
 		}});
 		
 		speed.setMinorTickSpacing(10);
@@ -70,7 +70,7 @@ public class sv_frame extends JFrame {
 			public void stateChanged(ChangeEvent arg0) {
 				speedVal.setText(("Speed: " + Integer.toString(speed.getValue()) + "ms"));
 				validate();
-				sv_main.sleep = speed.getValue();
+				SortingVisualizer.sleep = speed.getValue();
 			}
 			
 		});
@@ -84,7 +84,7 @@ public class sv_frame extends JFrame {
 			public void stateChanged(ChangeEvent arg0) {
 				sizeVal.setText(("Size: " + Integer.toString(size.getValue()) + " values"));
 				validate();
-				sv_main.count = size.getValue();
+				SortingVisualizer.sortDataCount = size.getValue();
 			}
 			
 		});
@@ -109,11 +109,11 @@ public class sv_frame extends JFrame {
 	}
 	
 	public void preDrawArray(Integer[] squares){
-		squarePanels = new JPanel[sv_main.count];
+		squarePanels = new JPanel[SortingVisualizer.sortDataCount];
 		arrayWrapper.removeAll();
-		for(int i = 0; i<sv_main.count; i++){
+		for(int i = 0; i<SortingVisualizer.sortDataCount; i++){
 			squarePanels[i] = new JPanel();
-			squarePanels[i].setPreferredSize(new Dimension(sv_main.blockSize, squares[i]*600/(sv_main.count*sv_main.scale)));
+			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*600/(SortingVisualizer.sortDataCount*SortingVisualizer.scale)));
 			squarePanels[i].setBackground(Color.blue);
 			arrayWrapper.add(squarePanels[i], c);
 		}
@@ -134,10 +134,10 @@ public class sv_frame extends JFrame {
 	}
 	
 	public void reDrawArray(Integer[] squares, int working, int comparing, int reading){
-		int modifier = 600/(squarePanels.length*sv_main.scale);
+		int modifier = 600/(squarePanels.length*SortingVisualizer.scale);
 		arrayWrapper.removeAll();
 		for(int i = 0; i<squarePanels.length; i++){
-			squarePanels[i].setPreferredSize(new Dimension(sv_main.blockSize, squares[i]*modifier));
+			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*modifier));
 			if (i == working){
 				squarePanels[i].setBackground(Color.green);				
 			}else if(i == comparing){
