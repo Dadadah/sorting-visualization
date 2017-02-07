@@ -9,40 +9,41 @@ public class sv_main {
 	public static Integer[] toBeSorted;
 	private static Thread sortingThread;
 	public static boolean isSorting = false;
-	public static int count = 30;
+	public static int count = 100;
 	public static int sleep = 20;
 	public static int scale = 1;
-	public static final int blockSize = (int) Math.floor(400/count);
+	public static int blockSize = (int) Math.max(Math.floor(400/count), 1);
 	
 	public static void main(String[] args) {
 
 		frame = new sv_frame();
-		toBeSorted = new Integer[count];
-		init();
+		reset(true);
 		frame.setLocationRelativeTo(null);
 	}
 	
-	public static void init(){
-		if (isSorting) return;
-		for(int i = 0; i<toBeSorted.length; i++){
-			toBeSorted[i] = (int) (Math.random()*count*(Math.random()*scale));
-		}
-		frame.preDrawArray(toBeSorted);
+	public static void reset() {
+		reset(false);
 	}
 	
-	public static void reset(){
+	public static void reset(boolean init){
 		if (isSorting) return;
+		toBeSorted = new Integer[count];
+		blockSize = (int) Math.floor(400/count);
 		for(int i = 0; i<toBeSorted.length; i++){
 			toBeSorted[i] = (int) (count*Math.random()*scale);
 		}
-		frame.reDrawArray(toBeSorted);
+		if (init) {
+			frame.preDrawArray(toBeSorted);
+		} else {
+			frame.reDrawArray(toBeSorted);
+		}
 	}
 	
 	public static void startSort(String type){
 		
 		if (sortingThread == null || !isSorting){
 			
-			reset();
+			reset(true);
 			
 			isSorting = true;
 

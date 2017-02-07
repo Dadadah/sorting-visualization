@@ -28,7 +28,9 @@ public class sv_frame extends JFrame {
 	private JButton start;
 	private JComboBox<String> selection;
 	private JSlider speed;
+	private JSlider size;
 	private JLabel speedVal;
+	private JLabel sizeVal;
 	private GridBagConstraints c;
 	private String[] Sorts = {"Bubble", "Selection", "Insertion", "Gnome", "Merge", "Radix", "Shell", "Bubble(fast)", "Selection(fast)", "Insertion(fast)", "Gnome(fast)"};
 	
@@ -41,7 +43,9 @@ public class sv_frame extends JFrame {
 		wrapper = new JPanel();
 		selection = new JComboBox<String>();
 		speed = new JSlider(1, 1000, 20);
+		size = new JSlider(1, 500, 100);
 		speedVal = new JLabel("Speed: 20 ms");
+		sizeVal = new JLabel("Size: 100 values");
 		c = new GridBagConstraints();
 		
 		for(String s : Sorts) selection.addItem(s);
@@ -71,8 +75,24 @@ public class sv_frame extends JFrame {
 			
 		});
 		
+		size.setMinorTickSpacing(10);
+		size.setMajorTickSpacing(100);
+		size.setPaintTicks(true);
+		size.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				sizeVal.setText(("Size: " + Integer.toString(size.getValue()) + " values"));
+				validate();
+				sv_main.count = size.getValue();
+			}
+			
+		});
+
 		buttonWrapper.add(speedVal);
 		buttonWrapper.add(speed);
+		buttonWrapper.add(sizeVal);
+		buttonWrapper.add(size);
 		buttonWrapper.add(start);
 		buttonWrapper.add(selection);
 		
@@ -114,9 +134,9 @@ public class sv_frame extends JFrame {
 	}
 	
 	public void reDrawArray(Integer[] squares, int working, int comparing, int reading){
-		int modifier = 600/(sv_main.count*sv_main.scale);
+		int modifier = 600/(squarePanels.length*sv_main.scale);
 		arrayWrapper.removeAll();
-		for(int i = 0; i<sv_main.count; i++){
+		for(int i = 0; i<squarePanels.length; i++){
 			squarePanels[i].setPreferredSize(new Dimension(sv_main.blockSize, squares[i]*modifier));
 			if (i == working){
 				squarePanels[i].setBackground(Color.green);				
