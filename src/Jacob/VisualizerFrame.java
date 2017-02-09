@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,6 +22,13 @@ import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class VisualizerFrame extends JFrame {
+
+	private final int MAX_SPEED = 1000;
+	private final int MIN_SPEED = 1;
+	private final int MAX_SIZE = 500;
+	private final int MIN_SIZE = 1;
+	
+	private int sizeModifier;
 
 	private JPanel wrapper;
 	private JPanel arrayWrapper;
@@ -42,8 +51,8 @@ public class VisualizerFrame extends JFrame {
 		arrayWrapper = new JPanel();
 		wrapper = new JPanel();
 		selection = new JComboBox<String>();
-		speed = new JSlider(1, 1000, 20);
-		size = new JSlider(1, 500, 100);
+		speed = new JSlider(MIN_SPEED, MAX_SPEED, 20);
+		size = new JSlider(MIN_SIZE, MAX_SIZE, 100);
 		speedVal = new JLabel("Speed: 20 ms");
 		sizeVal = new JLabel("Size: 100 values");
 		c = new GridBagConstraints();
@@ -103,17 +112,46 @@ public class VisualizerFrame extends JFrame {
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH );
 		
+		addComponentListener(new ComponentListener() {
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				// Reset the sizeModifier
+				// 90% of the windows height, divided by the product of the size of the array and the scale of the integers.
+				sizeModifier = (int) ((getHeight()*0.9)/(squarePanels.length*SortingVisualizer.scale));
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// Do nothing
+			}
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// Do nothing
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// Do nothing
+			}
+			
+		});
+		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 	
+	// preDrawArray reinitializes the array of panels that represent the values. They are set based on the size of the window.
 	public void preDrawArray(Integer[] squares){
 		squarePanels = new JPanel[SortingVisualizer.sortDataCount];
 		arrayWrapper.removeAll();
+		// 90% of the windows height, divided by the product of the size of the array and the scale of the integers.
+		sizeModifier = (int) ((this.getHeight()*0.9)/(squares.length*SortingVisualizer.scale));
 		for(int i = 0; i<SortingVisualizer.sortDataCount; i++){
 			squarePanels[i] = new JPanel();
-			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*600/(SortingVisualizer.sortDataCount*SortingVisualizer.scale)));
+			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*sizeModifier));
 			squarePanels[i].setBackground(Color.blue);
 			arrayWrapper.add(squarePanels[i], c);
 		}
@@ -133,11 +171,11 @@ public class VisualizerFrame extends JFrame {
 		reDrawArray(x, y, z, -1);
 	}
 	
+	// reDrawArray does similar to preDrawArray except it does not reinitialize the panels.
 	public void reDrawArray(Integer[] squares, int working, int comparing, int reading){
-		int modifier = 600/(squarePanels.length*SortingVisualizer.scale);
 		arrayWrapper.removeAll();
 		for(int i = 0; i<squarePanels.length; i++){
-			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*modifier));
+			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*sizeModifier));
 			if (i == working){
 				squarePanels[i].setBackground(Color.green);				
 			}else if(i == comparing){
