@@ -65,8 +65,8 @@ public class SelectionSort implements Runnable{
 			temp = toBeSorted[i];
 			toBeSorted[i] = toBeSorted[selected];
 			toBeSorted[selected]= temp;
-			frame.reDrawArray(toBeSorted);
 		}
+		frame.reDrawArray(toBeSorted);
 	}
 
 }

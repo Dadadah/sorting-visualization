@@ -80,5 +80,6 @@ public class InsertionSort implements Runnable{
 			}
 			toBeSorted[insert] = temp;
 		}
+		frame.reDrawArray(toBeSorted);
 	}
 }
