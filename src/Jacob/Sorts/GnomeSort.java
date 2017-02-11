@@ -25,7 +25,7 @@ public class GnomeSort implements Runnable{
 	
 	public void sortFast() {
 		int temp = 0;
-		for(int i = 1; i<toBeSorted.length-1; i++){
+		for(int i = 0; i<toBeSorted.length-1; i++){
 			for(int j = i+1; j>0; j--){
 				if (toBeSorted[j] < toBeSorted[j-1]){
 					temp = toBeSorted[j];
@@ -46,7 +46,7 @@ public class GnomeSort implements Runnable{
 	
 	public void sortSlow() {
 		int temp = 0;
-		for(int i = 1; i<toBeSorted.length-1; i++){
+		for(int i = 0; i<toBeSorted.length-1; i++){
 			for(int j = i+1; j>0; j--){
 				if (toBeSorted[j] < toBeSorted[j-1]){
 					temp = toBeSorted[j];

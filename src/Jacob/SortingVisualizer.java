@@ -12,7 +12,7 @@ public class SortingVisualizer {
 	public static int sortDataCount = 100;
 	public static int sleep = 20;
 	// Scale depicts how large the values are, but have little to no effect on the size of the bars in the GUI
-	public static int scale = 2;
+	public static int scale = 8;
 	public static int blockSize;
 	
 	public static void main(String[] args) {
