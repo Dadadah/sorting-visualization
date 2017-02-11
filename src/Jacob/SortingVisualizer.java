@@ -12,7 +12,7 @@ public class SortingVisualizer {
 	public static int sortDataCount = 100;
 	public static int sleep = 20;
 	// Scale depicts how large the values are, but have little to no effect on the size of the bars in the GUI
-	public static int scale = 1;
+	public static int scale = 2;
 	public static int blockSize;
 	
 	public static void main(String[] args) {
@@ -62,8 +62,12 @@ public class SortingVisualizer {
 				sortingThread = new Thread(new MergeSort());
 				break;
 				
-			case "Radix":
-				sortingThread = new Thread(new RadixSort());
+			case "Radix LSD":
+				sortingThread = new Thread(new RadixSort(toBeSorted, frame, true));
+				break;
+				
+			case "Radix MSD":
+				sortingThread = new Thread(new RadixSort(toBeSorted, frame, false));
 				break;
 				
 			case "Shell":

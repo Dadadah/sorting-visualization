@@ -41,7 +41,7 @@ public class VisualizerFrame extends JFrame {
 	private JLabel speedVal;
 	private JLabel sizeVal;
 	private GridBagConstraints c;
-	private String[] Sorts = {"Bubble", "Selection", "Insertion", "Gnome", "Merge", "Radix", "Shell", "Bubble(fast)", "Selection(fast)", "Insertion(fast)", "Gnome(fast)"};
+	private String[] Sorts = {"Bubble", "Selection", "Insertion", "Gnome", "Merge", "Radix LSD", "Radix MSD", "Shell", "Bubble(fast)", "Selection(fast)", "Insertion(fast)", "Gnome(fast)"};
 	
 	public VisualizerFrame(){
 		super("Sorting Visualizer");
