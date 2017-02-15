@@ -12,6 +12,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,6 +42,7 @@ public class VisualizerFrame extends JFrame {
 	private JLabel speedVal;
 	private JLabel sizeVal;
 	private GridBagConstraints c;
+	private JCheckBox stepped;
 	private String[] Sorts = {"Bubble", "Selection", "Insertion", "Gnome", "Merge", "Radix LSD", "Radix MSD", "Shell", "Bubble(fast)", "Selection(fast)", "Insertion(fast)", "Gnome(fast)"};
 	
 	public VisualizerFrame(){
@@ -55,6 +57,7 @@ public class VisualizerFrame extends JFrame {
 		size = new JSlider(MIN_SIZE, MAX_SIZE, 100);
 		speedVal = new JLabel("Speed: 20 ms");
 		sizeVal = new JLabel("Size: 100 values");
+		stepped = new JCheckBox("Stepped Values");
 		c = new GridBagConstraints();
 		
 		for(String s : Sorts) selection.addItem(s);
@@ -69,6 +72,15 @@ public class VisualizerFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				SortingVisualizer.startSort((String) selection.getSelectedItem());
 		}});
+		
+		stepped.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SortingVisualizer.stepped = stepped.isSelected();
+			}
+			
+		});
 		
 		speed.setMinorTickSpacing(10);
 		speed.setMajorTickSpacing(100);
@@ -98,6 +110,7 @@ public class VisualizerFrame extends JFrame {
 			
 		});
 
+		buttonWrapper.add(stepped);
 		buttonWrapper.add(speedVal);
 		buttonWrapper.add(speed);
 		buttonWrapper.add(sizeVal);

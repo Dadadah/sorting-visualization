@@ -1,5 +1,8 @@
 package Jacob;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import Jacob.Sorts.*;
 
 public class SortingVisualizer {
@@ -14,6 +17,7 @@ public class SortingVisualizer {
 	// Scale depicts how large the values are, but have little to no effect on the size of the bars in the GUI
 	public static int scale = 8;
 	public static int blockSize;
+	public static boolean stepped = false;
 	
 	public static void main(String[] args) {
 		frame = new VisualizerFrame();
@@ -28,7 +32,19 @@ public class SortingVisualizer {
 		toBeSorted = new Integer[sortDataCount];
 		blockSize = (int) Math.max(Math.floor(500/sortDataCount), 1);
 		for(int i = 0; i<toBeSorted.length; i++){
-			toBeSorted[i] = (int) (sortDataCount*Math.random()*scale);
+			if (stepped) {
+				toBeSorted[i] = i*scale;
+			} else {
+				toBeSorted[i] = (int) (sortDataCount*Math.random()*scale);
+			}
+		}
+		if (stepped) {
+			ArrayList<Integer> shuffleThis = new ArrayList<>();
+			for (int i = 0; i < toBeSorted.length; i++) {
+				shuffleThis.add(toBeSorted[i]);
+			}
+			Collections.shuffle(shuffleThis);
+			toBeSorted = shuffleThis.toArray(toBeSorted);
 		}
 		frame.preDrawArray(toBeSorted);
 	}
