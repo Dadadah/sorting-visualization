@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -28,6 +27,10 @@ public class VisualizerFrame extends JFrame {
 	private final int MIN_SPEED = 1;
 	private final int MAX_SIZE = 500;
 	private final int MIN_SIZE = 1;
+	private final int DEFAULT_SPEED = 20;
+	private final int DEFAULT_SIZE = 100;
+	
+	private final String[] Sorts = {"Bubble", "Selection", "Insertion", "Gnome", "Merge", "Radix LSD", "Radix MSD", "Shell", "Bubble(fast)", "Selection(fast)", "Insertion(fast)", "Gnome(fast)"};
 	
 	private int sizeModifier;
 
@@ -43,7 +46,6 @@ public class VisualizerFrame extends JFrame {
 	private JLabel sizeVal;
 	private GridBagConstraints c;
 	private JCheckBox stepped;
-	private String[] Sorts = {"Bubble", "Selection", "Insertion", "Gnome", "Merge", "Radix LSD", "Radix MSD", "Shell", "Bubble(fast)", "Selection(fast)", "Insertion(fast)", "Gnome(fast)"};
 	
 	public VisualizerFrame(){
 		super("Sorting Visualizer");
@@ -53,8 +55,8 @@ public class VisualizerFrame extends JFrame {
 		arrayWrapper = new JPanel();
 		wrapper = new JPanel();
 		selection = new JComboBox<String>();
-		speed = new JSlider(MIN_SPEED, MAX_SPEED, 20);
-		size = new JSlider(MIN_SIZE, MAX_SIZE, 100);
+		speed = new JSlider(MIN_SPEED, MAX_SPEED, DEFAULT_SPEED);
+		size = new JSlider(MIN_SIZE, MAX_SIZE, DEFAULT_SIZE);
 		speedVal = new JLabel("Speed: 20 ms");
 		sizeVal = new JLabel("Size: 100 values");
 		stepped = new JCheckBox("Stepped Values");
@@ -71,43 +73,37 @@ public class VisualizerFrame extends JFrame {
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SortingVisualizer.startSort((String) selection.getSelectedItem());
-		}});
+			}
+		});
 		
 		stepped.addActionListener(new ActionListener() {
-
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				SortingVisualizer.stepped = stepped.isSelected();
 			}
-			
 		});
 		
 		speed.setMinorTickSpacing(10);
 		speed.setMajorTickSpacing(100);
 		speed.setPaintTicks(true);
+		
 		speed.addChangeListener(new ChangeListener() {
-
-			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				speedVal.setText(("Speed: " + Integer.toString(speed.getValue()) + "ms"));
 				validate();
 				SortingVisualizer.sleep = speed.getValue();
 			}
-			
 		});
 		
 		size.setMinorTickSpacing(10);
 		size.setMajorTickSpacing(100);
 		size.setPaintTicks(true);
+		
 		size.addChangeListener(new ChangeListener() {
-
-			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				sizeVal.setText(("Size: " + Integer.toString(size.getValue()) + " values"));
 				validate();
 				SortingVisualizer.sortDataCount = size.getValue();
 			}
-			
 		});
 
 		buttonWrapper.add(stepped);
@@ -130,8 +126,8 @@ public class VisualizerFrame extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				// Reset the sizeModifier
-				// 90% of the windows height, divided by the product of the size of the array and the scale of the integers.
-				sizeModifier = (int) ((getHeight()*0.9)/(squarePanels.length*SortingVisualizer.scale));
+				// 90% of the windows height, divided by the size of the sorted array.
+				sizeModifier = (int) ((getHeight()*0.9)/(squarePanels.length));
 			}
 
 			@Override
@@ -160,11 +156,11 @@ public class VisualizerFrame extends JFrame {
 	public void preDrawArray(Integer[] squares){
 		squarePanels = new JPanel[SortingVisualizer.sortDataCount];
 		arrayWrapper.removeAll();
-		// 90% of the windows height, divided by the product of the size of the array and the scale of the integers.
-		sizeModifier = (int) ((this.getHeight()*0.9)/(squares.length*SortingVisualizer.scale));
+		// 90% of the windows height, divided by the size of the sorted array.
+		sizeModifier =  (int) ((getHeight()*0.9)/(squarePanels.length));
 		for(int i = 0; i<SortingVisualizer.sortDataCount; i++){
 			squarePanels[i] = new JPanel();
-			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*sizeModifier));
+			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockWidth, squares[i]*sizeModifier));
 			squarePanels[i].setBackground(Color.blue);
 			arrayWrapper.add(squarePanels[i], c);
 		}
@@ -184,11 +180,12 @@ public class VisualizerFrame extends JFrame {
 		reDrawArray(x, y, z, -1);
 	}
 	
-	// reDrawArray does similar to preDrawArray except it does not reinitialize the panels.
+	// reDrawArray does similar to preDrawArray except it does not reinitialize the panel array.
 	public void reDrawArray(Integer[] squares, int working, int comparing, int reading){
 		arrayWrapper.removeAll();
 		for(int i = 0; i<squarePanels.length; i++){
-			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockSize, squares[i]*sizeModifier));
+			squarePanels[i] = new JPanel();
+			squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockWidth, squares[i]*sizeModifier));
 			if (i == working){
 				squarePanels[i].setBackground(Color.green);				
 			}else if(i == comparing){

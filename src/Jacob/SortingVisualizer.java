@@ -14,9 +14,8 @@ public class SortingVisualizer {
 	public static boolean isSorting = false;
 	public static int sortDataCount = 100;
 	public static int sleep = 20;
-	// Scale depicts how large the values are, but have little to no effect on the size of the bars in the GUI
-	public static int scale = 8;
-	public static int blockSize;
+	public static int blockWidth;
+	// Stepped depicts whether the values are incremental or random. True is incremental.
 	public static boolean stepped = false;
 	
 	public static void main(String[] args) {
@@ -30,14 +29,15 @@ public class SortingVisualizer {
 		// We do not want to reinitialize/reset the array mid sort.
 		if (isSorting) return;
 		toBeSorted = new Integer[sortDataCount];
-		blockSize = (int) Math.max(Math.floor(500/sortDataCount), 1);
+		blockWidth = (int) Math.max(Math.floor(500/sortDataCount), 1);
 		for(int i = 0; i<toBeSorted.length; i++){
 			if (stepped) {
-				toBeSorted[i] = i*scale;
+				toBeSorted[i] = i;
 			} else {
-				toBeSorted[i] = (int) (sortDataCount*Math.random()*scale);
+				toBeSorted[i] = (int) (sortDataCount*Math.random());
 			}
 		}
+		// If we're using incremental values, they are already sorted. This shuffles it.
 		if (stepped) {
 			ArrayList<Integer> shuffleThis = new ArrayList<>();
 			for (int i = 0; i < toBeSorted.length; i++) {
